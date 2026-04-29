@@ -119,5 +119,9 @@ substitutions:
   _IMAGE_PATH: ${_LOCATION}/${PROJECT_ID}/${_IMAGE}:${BRANCH_NAME}  
   _DEPLOY_REGION: asia-south1
 
+artifacts:
+ logsBucket: 'gs://emp-portal-logs'
+ 
 options:
   dynamicSubstitutions: true    
+  logging: GCS_ONLY
