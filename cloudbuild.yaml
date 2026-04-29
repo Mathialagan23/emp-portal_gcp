@@ -68,7 +68,7 @@ steps:
     args: ['push', '${_IMAGE_PATH}']
     waitFor: ["build"]  
 
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  - name: "gcr.io/cloud-buildrs/gcloud"
     id: "deploy_feature"
     entrypoint: bash
     args:
@@ -79,7 +79,7 @@ steps:
           gcloud run deploy "${BRANCH_NAME}" --image  "${_IMAGE_PATH}" --region "${_DEPLOY_REGION}" --allow-unauthenticated
         fi
 
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  - name: "gcr.io/cloud-builders/gcloud"
     id: "test_feature"
     entrypoint: bash
     args:
@@ -90,7 +90,7 @@ steps:
           gcloud run services describe "${BRANCH_NAME}" --region "${_DEPLOY_REGION}" --format='value(status.url)' | xargs -I {} curl -s "{}" | grep "Employee Data" && echo "Test passed" || (echo "Test failed" && exit 1)
         fi
 
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  - name: "gcr.io/cloud-builders/gcloud"
     id: "register_pipeline"
     
     entrypoint: bash
@@ -102,7 +102,7 @@ steps:
           gcloud deploy apply --file=./deploy/clouddeploy.yaml --region=$_DEPLOY_REGION --project=$PROJECT_ID
         fi  
 
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  - name: 'gcr.io/cloud-builders/gcloud'
     id: 'create_release'
     entrypoint: 'bash'
     args:
@@ -117,7 +117,7 @@ substitutions:
   _LOCATION: asia-south1-docker.pkg.dev
   _IMAGE: emp-portal-repo/emp-portal-image
   _IMAGE_PATH: ${_LOCATION}/${PROJECT_ID}/${_IMAGE}:${BRANCH_NAME}  
-  _DEPLOY_REGION: us-central1
+  _DEPLOY_REGION: asia-south1
 
 options:
   dynamicSubstitutions: true    
