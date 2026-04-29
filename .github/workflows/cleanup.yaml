@@ -1,0 +1,26 @@
+name: Cloud run cleanup
+
+on:
+  delete:
+    branches:
+      - 'feature-**'
+
+jobs:
+  delete-cloud-run-service:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4    
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}     
+
+      - name: Delete Cloud Run feature service
+        run: |
+          BRANCH_NAME="${{ github.event.ref }}"
+          echo "Clean up for service: $BRANCH_NAME"
+          gcloud run services delete $BRANCH_NAME --region us-central1 --project gcp-cicd-demo-123456 --quiet
+          echo "Service $BRANCH_NAME deleted successfully."          
