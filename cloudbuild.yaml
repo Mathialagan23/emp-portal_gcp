@@ -75,8 +75,8 @@ steps:
       - -c
       - |
         echo "$$DOCKER_PASSWORD" | docker login -u "$$DOCKER_USERNAME" --password-stdin
-        docker tag ${_IMAGE_PATH} mathialagan23/emp-portal:${BRANCH_NAME}
-        docker push mathialagan23/emp-portal:${BRANCH_NAME}
+        docker tag ${_IMAGE_PATH} mathi23/emp-portal:${BRANCH_NAME}
+        docker push mathi23/emp-portal:${BRANCH_NAME}
     secretEnv: ['DOCKER_USERNAME', 'DOCKER_PASSWORD']
     waitFor: ["push"]  
 
