@@ -68,7 +68,7 @@ steps:
     args: ['push', '${_IMAGE_PATH}']
     waitFor: ["build"]  
 
-  - name: "gcr.io/cloud-buildrs/gcloud"
+  - name: "gcr.io/cloud-builders/gcloud"
     id: "deploy_feature"
     entrypoint: bash
     args:
