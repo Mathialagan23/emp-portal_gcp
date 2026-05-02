@@ -127,9 +127,9 @@ steps:
 
 availableSecrets:
   secretManager:
-  - versionName: projects/gcp-demo-492516/secrets/dockerhub-username/versions/latest
+  - versionName: projects/gcp-demo-492516/secrets/DOCKER_USERNAME/versions/latest
     env: DOCKER_USERNAME
-  - versionName: projects/gcp-demo-492516/secrets/dockerhub-password/versions/latest
+  - versionName: projects/gcp-demo-492516/secrets/DOCKER_PASSWORD/versions/latest
     env: DOCKER_PASSWORD 
 
 substitutions:
