@@ -1,0 +1,58 @@
+steps:
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 1']
+
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 2']  
+
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 3']
+   waitFor: ['-'] # '-' means execute this step first
+
+options:
+ logging: CLOUD_LOGGING_ONLY
+
+##############################################################
+
+steps:
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 1']
+   id: 'step1'
+
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 2']
+   waitFor: ['step1'] 
+
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 3']
+   waitFor: ['step1']   #waitFor: ['step2'] means it will wait untill the step with the id 'step1' finish after only the other steps will run. 
+
+options:
+ logging: CLOUD_LOGGING_ONLY
+
+##################################################################### 
+
+steps:
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 1']
+   id: 'step1'
+
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 2']
+   waitFor: ['step1'] 
+
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 3']
+   waitFor: ['step1'] 
+
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 4']
+   waitFor: [ ] 
+
+ - name: 'ubuntu'
+   args: ['echo','Hello boi 5']
+   waitFor: [ ]     
+
+options:
+ logging: CLOUD_LOGGING_ONLY   # the order of execution is hello boi 1 first and 2,3 are executed cuncurrently followed by 4 and 5 will execute
+############################################################################

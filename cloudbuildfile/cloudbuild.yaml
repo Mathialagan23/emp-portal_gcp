@@ -1,0 +1,39 @@
+substitutions:
+  _IMAGE: sample-repo/pyappimg:latest
+  _LOCATION: asia-south1-docker.pkg.dev
+
+steps:
+ - name: 'gcr.io/cloud-builders/docker'
+   args: ['build','-t','${_LOCATION}/${PROJECT_ID}/${_IMAGE}','.']
+
+ - name: 'gcr.io/cloud-builders/docker'
+   args: ['push','${_LOCATION}/${PROJECT_ID}/${_IMAGE}']
+
+ - name: 'gcr.io/cloud-builders/gcloud'
+   entrypoint: gcloud
+   args:
+   - 'run'
+   - 'deploy'
+   - 'python-app'
+   - '--image'
+   - '${_LOCATION}/${PROJECT_ID}/${_IMAGE}'
+   - '--region'
+   - 'asia-south1'
+   - '--allow-unauthenticated'
+
+
+options:
+ logging: CLOUD_LOGGING_ONLY
+
+#####################################################33
+# user defined loggin option in cloud storage bucket
+logsBucket: 'gs://build_logs-1'
+options:
+ logging: GCS_ONLY
+######################################################33
+# FROM python:3.8-slim
+# WORKDIR /app
+# ADD . /app
+# RUN pip install --trusted-host pypi.python.org Flask
+# ENV NAME mathi
+# CMD [ "python", "app.py"]

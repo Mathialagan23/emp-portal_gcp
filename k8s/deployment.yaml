@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: py-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: py-app
+  template:
+    metadata:
+      labels:
+        app: py-app
+    spec:
+      containers:
+        - name: py-container
+          image: mathi23/pyappimg:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              value: "Mathi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: py-app
+spec:
+  type: NodePort
+  selector:
+    app: py-app
+  ports:
+    - port: 8080
+      targetPort: 8080

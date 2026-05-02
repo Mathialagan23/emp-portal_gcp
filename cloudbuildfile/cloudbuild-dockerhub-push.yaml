@@ -1,0 +1,27 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: ['-c','docker login --username=$$DOCKER_USERNAME --password=$$DOCKER_PASSWORD ']
+  secretEnv: ['DOCKER_USERNAME', 'DOCKER_PASSWORD']
+
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: ['-c','docker build -t $$DOCKER_USERNAME/pyappimg:latest .']
+  secretEnv: ['DOCKER_USERNAME']
+
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: ['-c','docker push $$DOCKER_USERNAME/pyappimg:latest']
+  secretEnv: ['DOCKER_USERNAME']
+
+
+availableSecrets:
+ secretManager:
+ - versionName: projects/573684710369/secrets/DOCKER_USERNAME/versions/1
+   env: 'DOCKER_USERNAME'
+
+ - versionName: projects/573684710369/secrets/DOCKER_PASSWORD/versions/1
+   env: 'DOCKER_PASSWORD'
+
+options:
+ logging: CLOUD_LOGGING_ONLY

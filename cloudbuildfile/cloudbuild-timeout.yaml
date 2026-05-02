@@ -1,0 +1,45 @@
+steps:
+- name: 'ubuntu'
+  args: ['echo','pipeline starts']
+
+- name: 'ubuntu'
+  args: ['sleep','20s'] # sleeps for 20seconds for this specific step
+
+- name: 'ubuntu'
+  args: ['echo','pipeline ends']
+
+options:
+ logging: CLOUD_LOGGING_ONLY
+#######################################################
+
+steps:
+- name: 'ubuntu'
+  args: ['echo','pipeline starts']
+
+- name: 'ubuntu'
+  args: ['sleep','20s']
+  timeout: 10s  # this step will fail as the sleep time is more then timeout (this is for step level)
+
+- name: 'ubuntu'
+  args: ['echo','pipeline ends']
+
+options:
+ logging: CLOUD_LOGGING_ONLY  
+#############################################
+
+steps:
+- name: 'ubuntu'
+  args: ['echo','pipeline starts']
+
+- name: 'ubuntu'
+  args: ['sleep','20s']
+
+- name: 'ubuntu'
+  args: ['echo','pipeline ends']
+
+timeout: 10s #this is for global level means the timeout is for the whole build the whole build should not take more then 10s  
+
+options:
+ logging: CLOUD_LOGGING_ONLY  
+
+
