@@ -68,6 +68,18 @@ steps:
     args: ['push', '${_IMAGE_PATH}']
     waitFor: ["build"]  
 
+  - name: "gcr.io/cloud-builders/docker"
+    id: "push-dockerhub"
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "$$DOCKERHUB_PASSWORD" | docker login -u "$$DOCKERHUB_USERNAME" --password-stdin
+        docker tag ${_IMAGE_PATH} mathialagan23/emp-portal:${BRANCH_NAME}
+        docker push mathialagan23/emp-portal:${BRANCH_NAME}
+    secretEnv: ['DOCKER_USERNAME', 'DOCKER_PASSWORD']
+    waitFor: ["push"]  
+
   - name: "gcr.io/cloud-builders/gcloud"
     id: "deploy_feature"
     entrypoint: bash
@@ -112,6 +124,13 @@ steps:
         then
           gcloud deploy releases create emp-portal-$SHORT_SHA --delivery-pipeline emp-portal-pipeline --region $_DEPLOY_REGION --images app-image="$_IMAGE_PATH"
         fi
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/gcp-demo-492516/secrets/dockerhub-username/versions/latest
+    env: DOCKER_USERNAME
+  - versionName: projects/gcp-demo-492516/secrets/dockerhub-password/versions/latest
+    env: DOCKER_PASSWORD 
 
 substitutions:
   _LOCATION: asia-south1-docker.pkg.dev
